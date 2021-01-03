@@ -1,5 +1,7 @@
 # discord-slash-commands-helloworld
 
+[Slash CommandsでサーバレスなDiscordアプリを作る ｜ loop.run_forever()](https://note.sarisia.cc/entry/discord-slash-commands/)
+
 ## Run locally
 
 1. Set environment variables in `.env.json`
