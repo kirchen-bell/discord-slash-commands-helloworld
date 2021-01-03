@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Discord Slash Commands Example
+
+Globals:
+  Function:
+    Timeout: 5
+
+Parameters:
+  DiscordToken:
+    Description: Discord Token. Must be prefixed with 'Bot' or 'Bearer'.
+    NoEcho: true
+    Type: String
+  ApplicationID:
+    Description: Discord Application ID (Client ID)
+    Type: String
+  ApplicationPublicKey:
+    Description: Discord Application Public Key
+    Type: String
+  CommandGuildID:
+    Description: Discord Guild ID to register commands. Defaults to global commands.
+    Type: String
+
+Resources:
+  SlashCommandsCallbackFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: .
+      Handler: handler.callback
+      Runtime: python3.8
+      Events:
+        HelloWorld:
+          Type: HttpApi # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /callback
+            Method: POST
+      Environment:
+        Variables:
+          DISCORD_TOKEN: !Ref DiscordToken
+          APPLICATION_ID: !Ref ApplicationID
+          APPLICATION_PUBLIC_KEY: !Ref ApplicationPublicKey
+          COMMAND_GUILD_ID: !Ref CommandGuildID
+
+Outputs:
+  CallbackAPIEndpoint:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/callback"

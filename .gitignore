@@ -1,0 +1,6 @@
+/.vscode
+
+/.aws-sam
+/samconfig.toml
+
+/.env*
